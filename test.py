@@ -1,6 +1,6 @@
 import requests
 
-url = "http://localhost"
+url = "http://localhost/ipnotifier/api.php"
 data = '{"ip": "0.0.0.0"}'
 res = ""
 try:
@@ -9,4 +9,4 @@ except Exception as inst:
 	print(type(inst))
 	print(inst.args)
 else:
-	print (res.text)
+	print (res.status_code)
