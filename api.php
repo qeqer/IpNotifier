@@ -5,10 +5,7 @@
 		throw new ErrorException ($err_msg, 0, $err_severity, $err_file, $err_line);
 	});
 	$allOk = TRUE;
-	$host = "localhost";
-	$user = "qeqer";
-	$password = "Z0ltIIeFrexYuEuf";
-	$db = "qeqer";
+	include 'loginfo';
 	try {
 		$con = new mysqli($host, $user, $password, $db);
 		$con->set_charset("utf8");
@@ -26,6 +23,7 @@
 				}
 				break;
 			case "loadInfo":
+				date_default_timezone_set('Europe/Moscow');
 				$selQuery = "SELECT * FROM ip ORDER BY Time DESC";
 				$res = $con->query($selQuery);
 				if (!$res) {
@@ -36,18 +34,21 @@
 				$temp = $res -> fetch_array(MYSQLI_BOTH);
 				$resultT[] = $temp['Address'];
 				$resultT[] = $temp['Time'];
-				echo json_encode($resultT, JSON_UNESCAPED_UNICODE, true);
+				$resultT[] = date("Y-m-d H:i:s", time());
 		}
 	} catch (Exception $e) {
 		error_log("!!!".$e->getMessage()."\n");
 		header("HTTP/1.1 444 Fiasko");
+		$resultT[] = $e->getMessage();
+		echo json_encode($resultT, JSON_UNESCAPED_UNICODE, true);
 		exit(0);
 	}
 	if ($allOk) {
 		header("HTTP/1.1 200 OK");
 	} else {
-		header("HTTP/1.1 444 Fiasko");		
+		header("HTTP/1.1 445 Fiasko");		
 	}
+	echo json_encode($resultT, JSON_UNESCAPED_UNICODE, true);
 	function get_angular_request_payload() {
 		return json_decode(file_get_contents('php://input'), true);
 	}

@@ -9,7 +9,7 @@ s.close()
 # subprocess.call(["tracert", "google.com"])
 
 
-url = "http://localhost/ipnotifier/api.php"
+url = "http://qeqer.000webhostapp.com/api.php"
 data = {"command": "saveIP","ip": ip}
 
 res = ""
